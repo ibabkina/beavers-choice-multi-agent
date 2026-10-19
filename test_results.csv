@@ -1,0 +1,222 @@
+request_id,request_date,cash_balance,inventory_value,response
+1,2025-04-01,45124.7,4875.3,"Thank you for your request! We're happy to let you know that your order can be fully delivered by the specified date. The price reflects fair pricing based on current costs, and since we did not meet the threshold for a bulk discount, there will be no discounts applied. We appreciate your understanding and look forward to serving you!
+
+Order summary:
+- Glossy paper: 200 units, $40.00
+- Cardstock: 100 units, $15.00
+- Colored paper: 100 units, $10.00
+Bulk discount: 0% (no bulk discount, because discounts start at 500 units)
+Order total: $65.00
+Delivery by: 2025-04-01
+
+Munder Difflin Paper Company"
+2,2025-04-03,45117.7,4875.3,"Thank you for your order! We're happy to inform you that your supplies will be delivered shortly. You're receiving a bulk discount as your order qualifies for a 5% reduction due to the large quantity. However, we regret to inform you that we do not sell balloons. We appreciate your understanding!
+
+Order summary:
+- Poster paper: 500 units, $118.75
+- Party streamers: 300 units, $14.25
+Bulk discount: 5% (5% bulk discount because the order has 800 units (500 or more))
+Order total: $133.00
+Delivery by: 2025-04-07
+Not supplied:
+- 200 balloons: not an item we sell
+
+Munder Difflin Paper Company"
+3,2025-04-04,45056.3,4861.7,"Thank you for your order! We're pleased to inform you that your request for A4 paper can be fulfilled with a competitive price thanks to a 15% bulk discount applied due to the large quantity. However, we regret to inform you that the printer paper is not an item we sell. We appreciate your understanding!
+
+Order summary:
+- A4 paper: 10000 units, $425.00
+Bulk discount: 15% (15% bulk discount because the order has 10000 units (5000 or more))
+Order total: $425.00
+Delivery by: 2025-04-04
+Not supplied:
+- printer paper: not an item we sell
+
+Munder Difflin Paper Company"
+4,2025-04-05,45126.18,4787.45,"Thank you for your order! I'm pleased to inform you that your request can be fully delivered. The total for your order reflects a 5% bulk discount due to the large quantity, making it a competitive price compared to similar past quotes.
+
+Order summary:
+- Cardstock: 500 units, $71.25
+- A4 paper: 250 units, $11.88
+Bulk discount: 5% (5% bulk discount because the order has 750 units (500 or more))
+Order total: $83.13
+Delivery by: 2025-04-09
+
+Munder Difflin Paper Company"
+5,2025-04-05,45167.18,4737.45,"Thank you for your order! We're happy to inform you that all items can be fully delivered by April 9, 2025. You qualify for a 5% bulk discount due to the total of 1000 units, resulting in a significantly reduced price compared to our usual quotes. We appreciate your business and hope you have a wonderful party!
+
+Order summary:
+- Colored paper: 500 units, $47.50
+- 250 gsm cardstock: 300 units, $85.50
+- Decorative adhesive tape (washi tape): 200 units, $38.00
+Bulk discount: 5% (5% bulk discount because the order has 1000 units (500 or more))
+Order total: $171.00
+Delivery by: 2025-04-09
+
+Munder Difflin Paper Company"
+6,2025-04-06,45179.729999999996,4718.65,"Thank you for your order! We're happy to inform you that your order can be fully delivered by the requested date. You'll benefit from a 5% bulk discount due to the total of 1000 units ordered, and the pricing is very competitive compared to similar past orders.
+
+Order summary:
+- Construction paper: 500 units, $33.25
+- Colored paper: 300 units, $28.50
+- 250 gsm cardstock: 200 units, $57.00
+Bulk discount: 5% (5% bulk discount because the order has 1000 units (500 or more))
+Order total: $118.75
+Delivery by: 2025-04-10
+
+Munder Difflin Paper Company"
+7,2025-04-07,45496.13,4341.249999999999,"Thank you for your order! We're happy to inform you that your request can be fully delivered by April 11, 2025. We applied a 10% bulk discount to your order because it included over 2000 units, ensuring you received the best value compared to similar past orders.
+
+Order summary:
+- Glossy paper: 500 units, $90.00
+- Matte paper: 1000 units, $162.00
+- Large poster paper (24x36 inches): 300 units, $270.00
+- Cardstock: 200 units, $27.00
+Bulk discount: 10% (10% bulk discount because the order has 2000 units (2000 or more))
+Order total: $549.00
+Delivery by: 2025-04-11
+
+Munder Difflin Paper Company"
+8,2025-04-07,45388.13,4341.249999999999,"Thank you for your order! I'm pleased to inform you that we can fully deliver your items by April 14, 2025. Since your order exceeds 6500 units, you'll receive a 15% bulk discount, making this pricing competitive with similar past orders for ceremonies.
+
+Order summary:
+- Glossy paper: 500 units, $85.00
+- Matte paper: 1000 units, $153.00
+- Colored paper: 2000 units, $170.00
+- Recycled paper: 3000 units, $204.00
+Bulk discount: 15% (15% bulk discount because the order has 6500 units (5000 or more))
+Order total: $612.00
+Delivery by: 2025-04-14
+
+Munder Difflin Paper Company"
+9,2025-04-07,45393.13,4336.249999999999,"Thank you for your order! We're happy to confirm that we can partly fulfill your request. While we've successfully prepared some items for you, we regret to inform you that the A4 paper cannot be supplied in time. The total cost for the delivered items is competitive compared to similar past orders, and there are no bulk discounts applied since the total unit count is below 500.
+
+Order summary:
+- Glossy paper: 100 units, $20.00
+- Kraft paper: 50 units, $5.00
+Bulk discount: 0% (no bulk discount, because discounts start at 500 units)
+Order total: $25.00
+Delivery by: 2025-04-08
+Not supplied:
+- A4 paper (200 units): our supplier can only deliver on 2025-04-11, after your deadline of 2025-04-10
+
+Munder Difflin Paper Company"
+13,2025-04-08,45393.13,4336.249999999999,"Thank you for your order! Unfortunately, we are unable to fully deliver the items by your requested date; both A4 paper and cardstock can only be supplied after April 10. We sincerely apologize for any inconvenience this may cause.
+
+Order summary:
+- No items can be delivered for this request.
+Not supplied:
+- A4 paper (500 units): our supplier can only deliver on 2025-04-12, after your deadline of 2025-04-10
+- 250 gsm cardstock (200 units): our supplier can only deliver on 2025-04-12, after your deadline of 2025-04-10
+
+Munder Difflin Paper Company"
+12,2025-04-08,45390.28,4336.249999999999,"Thank you for your order! I'm pleased to inform you that we can fully deliver your requested supplies by April 12, 2025. Your total cost of $54.15 reflects a 5% bulk discount due to ordering over 800 units, making it a great deal compared to similar past orders. We appreciate your business and look forward to serving you!
+
+Order summary:
+- Cardstock: 200 units, $28.50
+- A4 paper: 500 units, $23.75
+- Paper napkins: 100 units, $1.90
+Bulk discount: 5% (5% bulk discount because the order has 800 units (500 or more))
+Order total: $54.15
+Delivery by: 2025-04-12
+
+Munder Difflin Paper Company"
+10,2025-04-08,45383.03,4336.249999999999,"Thank you for your order! I'm happy to inform you that your order can be fully delivered by April 12, 2025. You will receive a 5% bulk discount due to the total unit count, which aligns with previous quotes for similar supplies. We appreciate your business and look forward to serving you again!
+
+Order summary:
+- Glossy paper: 500 units, $95.00
+- Cardstock: 300 units, $42.75
+Bulk discount: 5% (5% bulk discount because the order has 800 units (500 or more))
+Order total: $137.75
+Delivery by: 2025-04-12
+
+Munder Difflin Paper Company"
+11,2025-04-08,45383.03,4336.249999999999,"Thank you for your request! Unfortunately, we are unable to fulfill your order as requested. We apologize for any inconvenience this may cause and appreciate your understanding.
+
+Order summary:
+- No items can be delivered for this request.
+Not supplied:
+- 300 sheets of A4 matte paper: not an item we sell
+- 500 sheets of A3 glossy paper: not an item we sell
+
+Munder Difflin Paper Company"
+14,2025-04-09,45375.53,4336.249999999999,"Thank you for your order! We're happy to confirm that your cardstock will be delivered as requested. Unfortunately, we are unable to supply the A4 and poster paper in time for your performance, as they can only be delivered after your deadline. We appreciate your understanding!
+
+Order summary:
+- 250 gsm cardstock: 500 units, $142.50
+Bulk discount: 5% (5% bulk discount because the order has 500 units (500 or more))
+Order total: $142.50
+Delivery by: 2025-04-13
+Not supplied:
+- A4 paper (5000 units): our supplier can only deliver on 2025-04-16, after your deadline of 2025-04-15
+- Poster paper (2000 units): our supplier can only deliver on 2025-04-16, after your deadline of 2025-04-15
+
+Munder Difflin Paper Company"
+15,2025-04-12,45375.53,4336.249999999999,"Thank you for your request! Unfortunately, we are unable to fully deliver the items you need at this time. We appreciate your understanding and apologize for any inconvenience this may cause.
+
+Order summary:
+- No items can be delivered for this request.
+Not supplied:
+- A4 white paper: not an item we sell
+- A3 colored paper (assorted colors): not an item we sell
+- cardboard for signage: not an item we sell
+
+Munder Difflin Paper Company"
+16,2025-04-13,45375.53,4336.249999999999,"Thank you for your order! We are able to deliver the poster paper you requested, but unfortunately, we cannot supply the A4 printer paper and colorful construction paper in time for your assembly event as our supplier can only deliver those items later. The price for the poster paper is consistent with our past quotes for similar items, and no bulk discount applies as discounts start at 500 units.
+
+Order summary:
+- Poster paper: 100 units, $25.00
+Bulk discount: 0% (no bulk discount, because discounts start at 500 units)
+Order total: $25.00
+Delivery by: 2025-04-13
+Not supplied:
+- A4 paper (500 units): our supplier can only deliver on 2025-04-17, after your deadline of 2025-04-15
+- Construction paper (200 units): our supplier can only deliver on 2025-04-17, after your deadline of 2025-04-15
+
+Munder Difflin Paper Company"
+17,2025-04-14,45423.03,4286.249999999999,"Thank you for your order! We can partially deliver your supplies, but unfortunately, some items will not be available by your requested deadline. However, the items that are being supplied are eligible for a 5% bulk discount due to the quantity ordered. We appreciate your understanding and hope the available items will help with your upcoming reception.
+
+Order summary:
+- Paper plates: 500 units, $47.50
+Bulk discount: 5% (5% bulk discount because the order has 500 units (500 or more))
+Order total: $47.50
+Delivery by: 2025-04-14
+Not supplied:
+- A4 paper (1000 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+- Colored paper (500 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+- Paper napkins (2000 units): our supplier can only deliver on 2025-04-21, after your deadline of 2025-04-15
+- Paper cups (1000 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+
+Munder Difflin Paper Company"
+18,2025-04-14,45423.03,4286.249999999999,"Thank you for your order! Unfortunately, we are unable to fulfill it as all requested items will be delivered after your deadline. We sincerely apologize for any inconvenience this may cause.
+
+Order summary:
+- No items can be delivered for this request.
+Not supplied:
+- Cardstock (500 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+- A4 paper (1000 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+- Colored paper (200 units): our supplier can only deliver on 2025-04-18, after your deadline of 2025-04-15
+
+Munder Difflin Paper Company"
+19,2025-04-15,45423.03,4286.249999999999,"Thank you for your order! Unfortunately, we are unable to fully supply your request due to some items being unavailable or arriving after your deadline. We apologize for the inconvenience and appreciate your understanding.
+
+Order summary:
+- No items can be delivered for this request.
+Not supplied:
+- 1000 sheets of cardstock in assorted colors: not an item we sell
+- A4 paper (2000 units): our supplier can only deliver on 2025-04-22, after your deadline of 2025-04-20
+- Matte paper (1500 units): our supplier can only deliver on 2025-04-22, after your deadline of 2025-04-20
+
+Munder Difflin Paper Company"
+20,2025-04-17,45409.53,3887.2499999999995,"Thank you for your order! We are pleased to inform you that we can deliver the flyers and posters in a timely manner, and you will also benefit from a 15% bulk discount for ordering over 7000 units, reflecting competitive pricing consistent with past orders for concert supplies. Unfortunately, we cannot supply the tickets as they are not part of our offerings. We appreciate your understanding!
+
+Order summary:
+- Flyers: 5000 units, $637.50
+- Large poster paper (24x36 inches): 2000 units, $1700.00
+Bulk discount: 15% (15% bulk discount because the order has 7000 units (5000 or more))
+Order total: $2337.50
+Delivery by: 2025-04-24
+Not supplied:
+- 10,000 tickets: not an item we sell
+
+Munder Difflin Paper Company"

@@ -1,0 +1,224 @@
+BEAVER'S CHOICE PAPER COMPANY - MULTI-AGENT SALES TEAM
+Design notes and reflection report
+
+Files submitted:
+- project_starter.py      the complete multi-agent system (one Python file)
+- workflow_diagram.png    the agent workflow diagram
+- test_results.csv        results of the run on all 20 requests in quote_requests_sample.csv
+- design_notes.txt        this report
+
+
+1. WHAT THE SYSTEM DOES
+-----------------------
+(The starter code calls the company "Munder Difflin Paper Company", so the replies are signed
+with that name.)
+The system reads a customer's paper order as plain text and answers it as plain text.
+For every request it:
+- matches the requested items to the company's catalog,
+- checks stock and, when needed, orders more from the supplier,
+- prices the order with bulk discounts, comparing it with past quotes,
+- records the sale in the database,
+- writes a short, friendly reply that explains the price and any item that cannot be supplied.
+
+It is built with the smolagents framework (ToolCallingAgent and the @tool decorator), uses the
+gpt-4o-mini model through the Udacity OpenAI-compatible endpoint, and stores everything in the
+SQLite database from the starter code.
+
+
+2. ARCHITECTURE (EXPLANATION OF THE WORKFLOW DIAGRAM)
+-----------------------------------------------------
+The system has 4 agents: one orchestrator and three worker agents. This is below the limit of 5.
+
+2.1 The agents and their roles
+
+1) Orchestrator agent
+   - Receives the customer request and reads the request date.
+   - Resets the shared order state for the new request.
+   - Delegates the work in a fixed order:
+       step 1: Inventory agent (always)
+       step 2: Quoting agent   (only if at least one item can be supplied)
+       step 3: Sales agent     (only if a quote was created)
+   - Writes the reply to the customer. A short message is written by the model, and an exact
+     order summary (items, prices, discount and reason, total, delivery date, items not supplied
+     and why) is added by Python, so the numbers in the reply are always correct.
+   - It has no tools of its own; its job is only coordination and the customer reply.
+
+2) Inventory agent - "what can we supply, and by when?"
+   - Matches each requested item to one exact catalog name.
+   - Checks stock and decides whether to reorder from the supplier.
+   - Records items the company does not sell.
+   Tools:
+   - list_catalog: lists exact item names, categories and prices.
+     Helper: none (reads the starter's paper_supplies list).
+   - check_inventory: all items in stock on the request date. Helper: get_all_inventory.
+   - check_item_stock: stock of one item. Helper: get_stock_level.
+   - check_and_restock: makes sure the full quantity is ready by the customer's deadline.
+     Helpers: get_stock_level, get_supplier_delivery_date, get_cash_balance, create_transaction.
+     If stock is short, it asks the supplier when the missing units would arrive. It reorders only
+     if they arrive by the deadline AND the restock costs no more than 10% of the current cash.
+     Otherwise the item is marked unavailable with a customer-friendly reason.
+   - record_unavailable_item: notes an item we do not sell (for example balloons or tickets).
+     Helper: none.
+
+3) Quoting agent - "what is the price, and why?"
+   - Prices exactly the items the inventory agent secured.
+   - Applies the bulk discount policy: 500+ units = 5%, 2000+ units = 10%, 5000+ units = 15%.
+   - Looks at similar past quotes and writes a short explanation of the price (1-2 sentences).
+   Tools:
+   - find_similar_quotes: up to 5 past quotes for 1-2 keywords. Helper: search_quote_history.
+   - calculate_quote: line prices, discount rate, the reason for the discount, and the total.
+     Helper: none (catalog prices and discount math in Python).
+
+4) Sales agent - "make it official"
+   - Records the sale of each quoted line in the database.
+   - Runs an internal financial health check.
+   Tools:
+   - finalize_sale: takes the quantity and price from the quote (it never retypes them), does a
+     final safety re-check of stock, and records the sale.
+     Helpers: get_stock_level, create_transaction.
+   - get_financial_summary: cash balance, inventory value and total assets (internal only).
+     Helper: generate_financial_report.
+
+All 7 required helper functions are used: create_transaction, get_all_inventory, get_stock_level,
+get_supplier_delivery_date, get_cash_balance, generate_financial_report, search_quote_history.
+
+2.2 How data flows (see the arrows in the diagram)
+- The orchestrator sends the request text to the inventory agent. Its tools save the result for
+  each item (quantity, available or not, ready date, reason) in a shared order state.
+- The orchestrator reads the secured items from the shared state and sends them to the quoting
+  agent. calculate_quote saves the quote in the shared state, and the agent returns the quote with
+  its explanation.
+- The orchestrator sends the quote to the sales agent. finalize_sale saves each sale (sold or
+  failed with a reason) in the shared state.
+- The orchestrator builds the reply only from the facts in the shared state.
+- The worker agents never call each other directly. Every hand-off goes through the orchestrator
+  and the shared order state.
+
+2.3 Why I chose this architecture (decision-making)
+- Orchestrator pattern instead of peer-to-peer: the business process is naturally a sequence
+  (you cannot quote what you cannot supply, and you cannot sell what was not quoted). One
+  coordinator makes the order of steps and the conditions easy to follow and to test.
+- One agent per business job: inventory, quoting and sales have clearly separate
+  responsibilities, which matches the project's recommended roles and keeps each agent's prompt
+  and tool list small.
+- 4 agents instead of 5: a separate reporting agent was not needed, because the financial health
+  check fits naturally with the sales agent.
+- Python for the exact business rules, the model for language: during testing the model sometimes
+  added up quantities twice, changed quantities between steps, or invented totals in the reply.
+  So stock checks, restock decisions, prices, discounts and totals are done by deterministic
+  Python inside the tools, and the model is used where it is strong: understanding the customer's
+  wording, matching it to catalog items, and writing a friendly message.
+- Shared order state: tools save their real results, so the reply can never claim a sale or a
+  price that did not happen.
+- State coordination with a lock (DB_LOCK): smolagents can run several tool calls at the same
+  time, and SQLite allows only one writer. Early runs showed "database is locked" errors. The two
+  tools that check stock and then write to the database (check_and_restock and finalize_sale) run
+  under a lock, so "check, then reserve" happens as one step.
+- Risk limit for restocking (10% of cash): in one test run, request 3 ("500 reams of printer
+  paper") made the system reorder 500,000 sheets, and the company's cash fell from about $45,000
+  to about $5,000 in that single request. I added a limit so a single restock can cost at most 10% of the current cash. The trade-off is that some
+  very large orders are refused, but the company is protected from one order emptying its cash.
+- Customer-safe replies: replies explain discounts and refusals but never show cash balances,
+  stock levels, profit data or internal error messages.
+
+
+3. EVALUATION RESULTS (test_results.csv)
+----------------------------------------
+All 20 requests in quote_requests_sample.csv were processed without crashing.
+
+- Fully fulfilled: 8 requests (1, 4, 5, 6, 7, 8, 10, 12)
+- Partly fulfilled: 7 requests (2, 3, 9, 14, 16, 17, 20)
+- Not fulfilled, with a reason: 5 requests (11, 13, 15, 18, 19)
+- The cash balance changed in 14 of the 20 requests.
+- Cash went from $45,059.70 at the start to $45,409.53 at the end; total sales were $4,926.28.
+
+This meets the project requirements: at least 3 cash changes (14), at least 3 fulfilled
+orders (15 fully or partly), and not every request was fulfilled (5 refused, with reasons).
+
+3.1 Strengths
+- Delivery deadlines are respected. The system checks the supplier's delivery date before it
+  promises anything. Example: in request 9 the A4 paper is refused because "our supplier can
+  only deliver on 2025-04-11, after your deadline of 2025-04-10", while the glossy and kraft
+  paper are still sold. Requests 13, 14, 16, 17, 18 and 19 show the same behaviour.
+- Partial orders are handled well: the customer gets what can be delivered, plus a clear list of
+  what cannot be supplied and why (requests 2, 3, 9, 14, 16, 17, 20).
+- Bulk discounts are applied consistently and explained in plain words, for example request 7:
+  "10% bulk discount because the order has 2000 units (2000 or more)", and request 8 and 20 with
+  15%. Small orders are told why there is no discount (request 1: discounts start at 500 units).
+- Replies are accurate: the order summary is built by Python from the recorded facts, so the
+  item lines always add up to the order total.
+- Items the company does not sell are recognized and explained (balloons in request 2, tickets in
+  request 20).
+- No sensitive data reaches the customer: no cash balance, stock levels or error messages.
+- The database stays consistent: the two tools that change the database run under a lock, every
+  request in the final run completed with a real answer (no error fallback), and no item was
+  sold twice.
+
+3.2 Areas for improvement found in the results
+- Item matching by the model is not always right. In requests 11, 15 and 19 some items that
+  are in the catalog (A3 glossy paper, A4 matte paper, A4 white paper, cardstock in assorted
+  colors) were marked "not an item we sell". In request 3 "500 reams of printer paper" was
+  refused as "not an item we sell", although the catalog has "Standard copy paper" (such a large
+  order might still have been refused, but the reason given was wrong), and the 5,000 sheets of
+  A3 paper were not mentioned in the reply at all.
+- Restocked items are sold without profit. In my implementation a restock is paid at the same
+  catalog price that we sell at. So when an item has to be restocked and a discount is applied, the
+  company loses a little money (request 2: cash -$7.00; request 20: cash -$13.50 on a $2,337.50
+  sale; request 16: a $25.00 sale left cash unchanged).
+- When the supplier is too late, the whole line is refused, even if some of the units are
+  already in stock. Requests 13 and 18 were refused completely for this kind of reason.
+
+
+4. SUGGESTIONS FOR FURTHER IMPROVEMENT
+--------------------------------------
+1) Reliable item matching. Add a deterministic matching step before the model decides: a
+   synonym table (for example "printer paper" / "printing paper" -> "A4 paper" or
+   "Standard copy paper", "poster board" -> "Large poster paper (24x36 inches)") plus fuzzy
+   string matching on catalog names. Only when no good match is found should the item be marked
+   "not an item we sell", and the reply could suggest the closest alternative instead.
+
+2) Pricing with a profit margin. Separate the supplier cost from the selling price (for example
+   selling price = cost + 25%), and never let a discount bring a line below cost. The quoting
+   agent could also use the past-quote data more actively, for example matching the discount that
+   similar customers received.
+
+3) Smarter partial fulfillment. When the supplier cannot deliver in time, offer the units already
+   in stock now and the rest on the supplier's date, and let the customer choose.
+
+4) Proactive restocking. Give the inventory agent minimum stock levels per item, so popular items
+   are reordered before they run out, using get_all_inventory and get_cash_balance as a daily
+   health check. This would reduce the number of orders refused because of supplier lead times.
+
+5) New agents (still within the limit of 5): a business advisor agent that reviews all
+   transactions and recommends price or stock changes, or a customer agent that can negotiate
+   quantities and delivery dates with the sales team.
+
+
+5. HOW THE PROJECT REQUIREMENTS ARE MET
+---------------------------------------
+- At most 5 agents: 4 agents (orchestrator + inventory, quoting and sales workers).
+- Framework: smolagents (ToolCallingAgent subclasses, tools defined with @tool).
+- One Python file: all agent code is in project_starter.py, in the "YOUR MULTI AGENT STARTS
+  HERE" section; run_test_scenarios() was completed to use the orchestrator.
+- All 7 helper functions are used inside tools (see section 2.1), including get_all_inventory,
+  get_cash_balance and generate_financial_report.
+- Text in, text out: each request is plain text, and each answer is plain text.
+- Evaluation on the full quote_requests_sample.csv, saved in test_results.csv: 14 cash changes,
+  15 requests fulfilled fully or partly, 5 not fulfilled, all with reasons (section 3).
+- Customer outputs are transparent: every reply lists what is delivered, the price and the
+  discount reason, the delivery date, and what cannot be supplied and why.
+- No sensitive information to customers: no cash, stock levels, profit data or error messages.
+  Technical errors are only printed to the log, and the customer gets a polite message.
+- Readable code: snake_case for functions and variables, PascalCase for agent classes,
+  docstrings on every tool and class, comments on the business rules, and small separate
+  functions for each job (tools, quote math, reply facts, order summary).
+
+
+6. HOW TO RUN
+-------------
+1. pip install -r requirements.txt
+2. pip install smolagents
+3. Put UDACITY_OPENAI_API_KEY in the .env file.
+4. python project_starter.py
+   This runs run_test_scenarios(): it processes every request in quote_requests_sample.csv in
+   date order, prints each reply and the financial state, and writes test_results.csv.
